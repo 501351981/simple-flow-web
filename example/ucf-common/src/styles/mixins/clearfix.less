@@ -1,0 +1,14 @@
+// mixins for clearfix
+// ------------------------
+.clearfix() {
+
+    &::before {
+        display: table;
+        content: '';
+    }
+    &::after {
+        display: table;
+        clear: both;
+        content: '';
+    }
+}
