@@ -47,6 +47,20 @@ export function shortcutMixin(GraphView) {
                 target: eventLayer,
                 action: redo.bind(this),
             },
+            {
+                name: 'zoomIn',
+                keyboardShortcut: ['Ctrl+equals',  'Meta+equals'],
+                propagate: false,
+                target: eventLayer,
+                action: this.zoomIn.bind(this),
+            },
+            {
+                name: 'zoomOut',
+                keyboardShortcut: ['Ctrl+minus',  'Meta+minus'],
+                propagate: false,
+                target: eventLayer,
+                action: this.zoomOut.bind(this),
+            },
         ]
         addShortcut(shortcutConfig)
     }

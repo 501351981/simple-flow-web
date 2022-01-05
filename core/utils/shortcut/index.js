@@ -8,6 +8,7 @@ export function addShortcut(shortcutConfig) {
                 propagate: config.propagate,
                 target: config.target,
                 hasDefaultInput: false, // target里默认有input
+                keycode: config.hasOwnProperty('keycode') ? config.keycode : false
             });
         });
     });

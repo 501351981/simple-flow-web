@@ -74,6 +74,11 @@ Node.prototype.a = function () {
         return this
     }
 }
+
+Node.prototype.canSelected = function () {
+    return !(this.a('selectable') === false)
+}
+
 Node.prototype.setDataModel = function(dataModel){
     this._dataModel =dataModel
     return this

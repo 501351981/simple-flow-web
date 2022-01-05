@@ -144,5 +144,7 @@ const special_keys = {
 	f10: 121,
 	f11: 122,
 	f12: 123,
+	equals: 187,
+	minus: 189,
 };
 export { key, shift_nums, special_keys };

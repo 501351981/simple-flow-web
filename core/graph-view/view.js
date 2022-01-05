@@ -31,11 +31,15 @@ export function viewMixin(GraphView) {
         this._nodeLayer =  $(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
             .attr('class','sf-nodes')
 
+        this._selectLayer =  $(document.createElementNS('http://www.w3.org/2000/svg', 'g'))
+            .attr('class','sf-select')
+
         this._eventLayer.append(this._backgroundLayer)
         this._eventLayer.append(this._gridLayer)
         this._eventLayer.append(this._linkLayer)
         this._eventLayer.append(this._tempLinkLayer)
         this._eventLayer.append(this._nodeLayer)
+        this._eventLayer.append(this._selectLayer)
 
         this._outerLayer.append(this._eventLayer)
         return this
@@ -149,6 +153,26 @@ export function viewMixin(GraphView) {
         this._eventLayer.attr('transform',`scale(${this._scale})`)
         this._outerLayer.attr('width',this._width * this._scale)
         this._outerLayer.attr('height',this._height * this._scale)
+        return this
+    }
+
+    GraphView.prototype.zoomIn = function () {
+        //放大
+        let scale = this._scale
+        const {max, step} = this._config.graphView.scale
+        if(scale + step <= max){
+            this.setScale(scale + step)
+        }
+        return this
+    }
+
+    GraphView.prototype.zoomOut = function () {
+        //放大
+        let scale = this._scale
+        const {min, step} = this._config.graphView.scale
+        if(scale - step >= min){
+            this.setScale(scale - step)
+        }
         return this
     }
 }

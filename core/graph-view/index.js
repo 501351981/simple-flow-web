@@ -1,11 +1,14 @@
+import merge from 'lodash/merge'
 import {nodeMixin} from "./node";
 import {eventMixin} from './event'
 import {viewMixin} from './view'
 import {selectionModelMixin} from "./selection-model";
 import {shortcutMixin} from './shortcut'
+import config from '../config/index'
 
-function GraphView(dataModel) {
+function GraphView(dataModel, options = {}) {
     this._dataModel = dataModel
+    this._config = merge({},config,options)
     this._parentNode = null      //父节点
     this._outerLayer = null      //最外层节点
     this._eventLayer = null      //事件层
@@ -14,10 +17,10 @@ function GraphView(dataModel) {
     this._linkLayer = null       //连线层
     this._nodeLayer = null       //节点层
 
-    this._width = 5000
-    this._height = 5000
-    this._gridSize = 20
-    this._background = '#fff'
+    this._width = this._config.graphView.width
+    this._height = this._config.graphView.height
+    this._background = this._config.graphView.background
+    this._gridSize = this._config.grid.gridSize
     this._scale = 1
 
     this._nodeTypes = {}
@@ -33,6 +36,7 @@ function GraphView(dataModel) {
     this.initSelectionModel()
     this.initShortcut()
     dataModel.setGraphView(this)
+    console.log('config',this._config)
 }
 
 nodeMixin(GraphView)
