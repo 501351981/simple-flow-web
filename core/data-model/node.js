@@ -21,7 +21,17 @@ export  function nodeMixin(DataModel) {
         for(let i=0; i < nodesConfig.length; i++){
             let nodeConfig = nodesConfig[i]
             if(nodeConfig.id){
-                let node = new Node(nodeConfig, this)
+                let type = nodeConfig.type
+                let NodeConstruct = type && this.getNodeConfig(type)
+                let node
+                if(typeof NodeConstruct === 'function'){
+                    node = new NodeConstruct(nodeConfig, this)
+                    console.log('node',node)
+
+                }else{
+                    node = new Node(nodeConfig, this)
+                }
+
                 this._nodes[nodeConfig.id] = node
                 nodesEl.appendChild(node.draw())
             }

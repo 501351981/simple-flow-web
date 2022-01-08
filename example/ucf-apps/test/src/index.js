@@ -7,6 +7,7 @@ import { connect } from 'mirrorx';
 import $ from 'jquery'
 import SF from '../../../../core/index'
 // import Node from "../../../../core/node/index";
+import FunctionNode from "./nodes/function";
 import './index.less';
 import '../../../../core/style/index.less'
 
@@ -14,6 +15,7 @@ import SelectionModel from "../../../../core/selection-model";
 import HistoryManager from "../../../../core/history-manager";
 
 console.log(SF)
+// console.log(FunctionNode instanceof SF.Node)
 class IndexView extends Component {
 	constructor(props) {
 		super(props);
@@ -51,18 +53,7 @@ class IndexView extends Component {
 			width:150,
 			height: 40
 		})
-		graphView.registerNode('function',{
-			align:'left',
-			category: 'common',
-			bgColor: '#fdd0a2',
-			color:'#fff',
-			defaults:{},
-			icon: 'http://127.0.0.1:1880/icons/node-red/inject.svg',
-			inputs:1,
-			outputs:1,
-			width:150,
-			height: 40
-		})
+		graphView.registerNode('function',FunctionNode)
 		graphView.registerNode('debug',{
 			align:'right',
 			category: 'common',
