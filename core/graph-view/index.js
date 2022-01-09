@@ -4,6 +4,7 @@ import {eventMixin} from './event'
 import {viewMixin} from './view'
 import {selectionModelMixin} from "./selection-model";
 import {shortcutMixin} from './shortcut'
+import {hookMixin} from "./hook";
 import config from '../config/index'
 
 function GraphView(dataModel, options = {}) {
@@ -44,6 +45,7 @@ eventMixin(GraphView)
 viewMixin(GraphView)
 selectionModelMixin(GraphView)
 shortcutMixin(GraphView)
+hookMixin(GraphView)
 
 GraphView.prototype.getVersion = function () {
     return this._version

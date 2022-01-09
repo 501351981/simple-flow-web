@@ -102,7 +102,11 @@ export function shortcutMixin(GraphView) {
 
     function deleteSelectNodes() {
         let datas = this.sm().getSelection()
-        this.getDataModel().remove(datas)
+        if(datas && datas.length){
+            this.beforeDelete(datas,(d)=>{
+                this.getDataModel().remove(d)
+            })
+        }
     }
 
     function selectAll() {

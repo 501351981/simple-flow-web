@@ -95,8 +95,10 @@ class FunctionNode extends SF.Node{
         this._view.setAttribute('id',this._id)
         this._view.setAttribute('transform',`translate(${this._position.x},${this._position.y})`)
 
-        this._view.__mainRect__.setAttribute('width',this._width)
-        this._view.__mainRect__.setAttribute('height',this._height)
+        let mainRect = this._view.__mainRect__
+        mainRect.setAttribute('cx',this._width / 2)
+        mainRect.setAttribute('cy',this._width/2)
+        mainRect.setAttribute('r',this._width/2)
 
         this._dataModel.updateWires(this._id)
         return this

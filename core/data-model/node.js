@@ -317,6 +317,7 @@ export  function nodeMixin(DataModel) {
 
         if(historyEvent.data.length){
             this._historyManager.addHistory(historyEvent)
+            this._fireDataModelChangeListener(historyEvent)
         }
         return this
     }
@@ -373,6 +374,7 @@ export  function nodeMixin(DataModel) {
 
         historyEvent.data.push(link)
         this._historyManager.addHistory(historyEvent)
+        this._fireDataModelChangeListener(historyEvent)
         return link
     }
 
@@ -432,6 +434,12 @@ export  function nodeMixin(DataModel) {
         })
     }
 
+    DataModel.prototype.clear = function () {
+        //待实现
+        //清楚所有数据
+        //history
+    }
+
     DataModel.prototype.remove = function (datas) {
         let historyEvent = {
             kind: "remove",
@@ -459,6 +467,7 @@ export  function nodeMixin(DataModel) {
         }
 
         this._historyManager.addHistory(historyEvent)
+        this._fireDataModelChangeListener(historyEvent)
         return this
     }
 

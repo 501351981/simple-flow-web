@@ -69,6 +69,12 @@ class IndexView extends Component {
 		dataModel.deserialize(json)
 		graphView.addToDOM(this.ref.current)
 
+		// graphView.beforeDelete = function(datas,done){
+		// 	console.log(datas)
+		// 	setTimeout(()=>{
+		// 		done(datas)
+		// 	},2000)
+		// }
 
 		let node = window.node1 = new SF.Node({
 			"type": "inject",
