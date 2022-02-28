@@ -2,9 +2,9 @@
   "name": "simple-flow",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "core/index.js",
   "directories": {
-    "example": "example"
+    "example": "example2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

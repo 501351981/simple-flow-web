@@ -1,0 +1,55 @@
+{
+  "name": "ucf-webapp",
+  "version": "1.1.7",
+  "description": "开发思路：[大型企业应用在前端微应用视角下的思考](https://github.com/iuap-design/blog/issues/306)",
+  "main": "index.js",
+  "scripts": {
+    "start": "aiot-qiankun-ucf-scripts start --homepage=spas-new/ --port=3001",
+    "build": "aiot-qiankun-ucf-scripts build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iuap-design/ucf-webapp.git"
+  },
+  "author": "Yonyou FED",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iuap-design/ucf-webapp/issues"
+  },
+  "homepage": "https://github.com/iuap-design/ucf-webapp#readme",
+  "devDependencies": {
+    "brace": "^0.11.1",
+    "copy-webpack-plugin": "^5.0.3",
+    "react-ace": "^9.4.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.0",
+    "@babel/runtime": "^7.4.0",
+    "aiot-design": "^0.2.15",
+    "aiot-qiankun-ucf-scripts": "^0.0.5",
+    "antd": "4.13.1",
+    "babel-eslint": "^10.1.0",
+    "classnames": "^2.2.6",
+    "custom-event-polyfill": "^1.0.7",
+    "echarts": "^4.9.0",
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-babel": "^9.0.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.23.1",
+    "file-saver": "^2.0.2",
+    "lodash": "^4.17.21",
+    "mirrorx": "^0.2.13",
+    "moment": "^2.29.1",
+    "prettier": "^2.2.1",
+    "prop-types": "^15.7.2",
+    "react-intl": "^2.8.0",
+    "sass-loader": "^10.0.4",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "xlsx": "^0.16.4"
+  }
+}
