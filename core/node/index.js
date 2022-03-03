@@ -8,7 +8,7 @@ function Node(options,dataModel) {
     let type = options.type
     let {
         id,
-        p:{displayName,position={x:undefined,y:undefined}, width, height},
+        p:{displayName,position={x:undefined,y:undefined}, width, height} = {position:{x:0,y:0}},
         a={},
         wires=[]
     } = options

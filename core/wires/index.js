@@ -43,7 +43,7 @@ Wires.prototype.draw = function () {
     if(!this._source || !this._target){
         return
     }
-    let [startX,startY] = this._source.getOutputPortCenter(this._sourcePort)
+    let [startX,startY] = this._source.getOutputPortCenter(this._sourcePort || 0)
     let [endX,endY] = this._target.getInputPortCenter()
     let d = generateLinkPath(startX,startY,endX,endY,1)
     let path = document.createElementNS("http://www.w3.org/2000/svg","path")
