@@ -227,7 +227,7 @@ export  function nodeMixin(DataModel) {
                     let sourcePort = wires.getSourcePort()
 
                     //检查source中是否存储此线
-                    let sourceWires = source.getWires()
+                    let sourceWires = source.getWires() || []
                     if(!sourceWires[sourcePort]){
                         sourceWires[sourcePort] = []
                     }
@@ -286,7 +286,7 @@ export  function nodeMixin(DataModel) {
                 let sourcePort = wires.getSourcePort()
 
                 //检查source中是否存储此线
-                let sourceWires = source.getWires()
+                let sourceWires = source.getWires()||[]
                 if(!sourceWires[sourcePort]){
                     sourceWires[sourcePort] = []
                 }

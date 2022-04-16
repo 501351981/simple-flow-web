@@ -3,7 +3,7 @@ import {generateId} from "../utils/node";
 import $ from 'jquery'
 
 function Wires(options) {
-    let {id, source, sourcePort, target} = options
+    let {id, source, sourcePort=0, target} = options
     this._id = id || generateId()
     this._source = source
     this._sourcePort = sourcePort
