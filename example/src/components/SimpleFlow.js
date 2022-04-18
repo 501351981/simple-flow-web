@@ -85,6 +85,16 @@ function SimpleFlow(){
             target: node2
         })
         dataModel.add(wire)
+
+        let smHandle = function (event){
+            console.log("选中改变",event)
+        }
+        graphView.getSelectionModel().addSelectionChangeListener(smHandle)
+
+        // graphView.getSelectionModel().removeSelectionChangeListener(smHandle)
+        dataModel.addDataModelChangeListener(function (event){
+            console.log("addDataModelChangeListener", event)
+        })
     },[])
 
     return <div ref={ref} className={'sf-wrapper'}></div>

@@ -22,6 +22,9 @@ export  function hookMixin(DataModel) {
     }
 
     DataModel.prototype._fireDataModelChangeListener = function (event) {
+        if(!this._dataModelChangeListener.length){
+            return
+        }
         this._dataModelChangeListener.forEach(listener => listener(event) )
     }
 

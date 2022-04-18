@@ -25,6 +25,19 @@ SelectionModel.prototype.addSelectionChangeListener = function (listener, ahead)
     }
 }
 
+SelectionModel.prototype._fireSelectionChange = function (event){
+    if(!this._selectionChangeListeners.length){
+        return
+    }
+    this._selectionChangeListeners.forEach(callback => {
+        try {
+            callback(event)
+        }catch (e){
+            console.error("selectionChangeListener执行错误", e)
+        }
+    })
+}
+
 //追加选中一个或多个数据元素，参数可为单个数据元素，也可为数组
 SelectionModel.prototype.appendSelection = function (datas) {
    if(Array.isArray(datas)){
@@ -43,6 +56,7 @@ SelectionModel.prototype.appendSelection = function (datas) {
        this._list.push(datas)
        datas.selected()
    }
+   this._fireSelectionChange({kind: 'append', data: datas})
     return this
 }
 
@@ -52,6 +66,7 @@ SelectionModel.prototype.clearSelection = function () {
         data.deselected()
     })
     this._list = []
+    this._fireSelectionChange({kind: 'clear', data: []})
     return this
 }
 
@@ -143,6 +158,8 @@ SelectionModel.prototype.removeSelection = function (datas) {
             }
         }
     }
+    
+    this._fireSelectionChange({kind: 'remove', data: datas})
     return this
 }
 
@@ -204,6 +221,7 @@ SelectionModel.prototype.setSelection = function (datas) {
         this._list.push(datas)
         datas.selected()
     }
+    this._fireSelectionChange({kind: 'set', data: datas})
     return this
 }
 
