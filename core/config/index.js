@@ -7,7 +7,8 @@ export default {
             max: 2,
             min: 0.5,
             step: 0.1
-        }
+        },
+        editable: true
     },
     grid: {
         show: true,

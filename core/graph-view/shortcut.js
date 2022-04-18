@@ -15,21 +15,21 @@ export function shortcutMixin(GraphView) {
             {
                 name: 'paste',
                 keyboardShortcut: ['Ctrl+V', 'Meta+V'],
-                propagate: true,
+                propagate: false,
                 target: eventLayer,
                 action: pasteNodes.bind(this),
             },
             {
                 name: 'selectAll',
                 keyboardShortcut: ['Ctrl+A', 'Meta+A'],
-                propagate: true,
+                propagate: false,
                 target: eventLayer,
                 action: selectAll.bind(this),
             },
             {
                 name: 'delete',
                 keyboardShortcut: ['BackSpace'],
-                propagate: true,
+                propagate: false,
                 target: eventLayer,
                 action: deleteSelectNodes.bind(this),
             },
@@ -66,14 +66,32 @@ export function shortcutMixin(GraphView) {
     }
 
     function undo() {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行uodo操作")
+            }
+            return
+        }
         this.dm().getHistoryManager().undo()
     }
 
     function redo() {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行redo操作")
+            }
+            return
+        }
         this.dm().getHistoryManager().redo()
     }
 
     function copySelectNodes() {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行copySelectNodes操作")
+            }
+            return
+        }
         let nodes = this.sm().getSelection()
         if(nodes.length){
             let json = this.getDataModel().serializeNodes(nodes)
@@ -82,6 +100,12 @@ export function shortcutMixin(GraphView) {
     }
 
     function pasteNodes(event) {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行pastNodes操作")
+            }
+            return
+        }
         let copyData = window.localStorage.getItem('sfCopyData') || '[]'
         let dataModel = this.getDataModel()
         let [nodes, wires] = dataModel.deserializeNodes(copyData)
@@ -101,7 +125,14 @@ export function shortcutMixin(GraphView) {
     }
 
     function deleteSelectNodes() {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行deleteSelectNodes操作")
+            }
+            return
+        }
         let datas = this.sm().getSelection()
+        console.log(datas)
         if(datas && datas.length){
             this.beforeDelete(datas,(d)=>{
                 this.getDataModel().remove(d)

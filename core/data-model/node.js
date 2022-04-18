@@ -33,13 +33,14 @@ export  function nodeMixin(DataModel) {
                 }
 
                 this._nodes[nodeConfig.id] = node
+                this._nodesSortKey.push(nodeConfig.id)
                 nodesEl.appendChild(node.draw())
             }
         }
 
         let linksEl = document.createDocumentFragment()
 
-        Object.keys(this._nodes).forEach((id)=>{
+        this._nodesSortKey.forEach((id)=>{
             let source = this._nodes[id]
             let wires = source.getWires()
             if(wires.length){
@@ -136,7 +137,7 @@ export  function nodeMixin(DataModel) {
         }
         json.a = this._attrObj
 
-        json.d = Object.keys(this._nodes).map(nodeId => {
+        json.d = this._nodesSortKey.map(nodeId => {
             let node = this._nodes[nodeId]
             return {
                 type: node.getType(),
@@ -191,6 +192,12 @@ export  function nodeMixin(DataModel) {
 
 
     DataModel.prototype.add = function (datas) {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行add操作")
+            }
+            return
+        }
         let historyEvent = {
             kind: "add",
             data: []
@@ -209,6 +216,7 @@ export  function nodeMixin(DataModel) {
                     }
                     node.setDataModel(this)
                     this._nodes[nodeId] = node
+                    this._nodesSortKey.push(nodeId)
                     nodesEl.appendChild(node.draw())
 
                     historyEvent.data.push(node)
@@ -267,6 +275,7 @@ export  function nodeMixin(DataModel) {
                 }
                 node.setDataModel(this)
                 this._nodes[nodeId] = node
+                this._nodesSortKey.push(nodeId)
                 this._graphView.getNodeLayer().append(node.draw())
 
                 historyEvent.data.push(node)
@@ -323,6 +332,12 @@ export  function nodeMixin(DataModel) {
     }
 
     DataModel.prototype.wire = function({source,sourcePort,target}){
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行wire操作")
+            }
+            return
+        }
         let historyEvent = {
             kind: "add",
             data: []
@@ -415,7 +430,7 @@ export  function nodeMixin(DataModel) {
     }
 
     DataModel.prototype.eachNode = function (func) {
-        Object.keys(this._nodes).forEach(nodeId => {
+        this._nodesSortKey.forEach(nodeId => {
             try {
                 func(this._nodes[nodeId])
             }catch (e) {
@@ -441,6 +456,12 @@ export  function nodeMixin(DataModel) {
     }
 
     DataModel.prototype.remove = function (datas) {
+        if(!this.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行remove操作")
+            }
+            return
+        }
         let historyEvent = {
             kind: "remove",
             data: Array.isArray(datas) ? [...datas] : [datas]
@@ -466,6 +487,7 @@ export  function nodeMixin(DataModel) {
             }
         }
 
+        historyEvent.data = [...new Set(historyEvent.data)]
         this._historyManager.addHistory(historyEvent)
         this._fireDataModelChangeListener(historyEvent)
         return this
@@ -489,6 +511,12 @@ export  function nodeMixin(DataModel) {
         })
         //清楚dataModel中的缓存
         delete this._nodes[nodeId]
+        for(let i = 0; i < this._nodesSortKey.length; i++){
+            if(nodeId ===  this._nodesSortKey[i]){
+                this._nodesSortKey.splice(i, 1)
+                break
+            }
+        }
 
         //从选中的节点中删除
         let sm = this._graphView.sm()

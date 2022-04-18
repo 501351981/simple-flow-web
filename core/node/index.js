@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import {generateId} from "../utils/node";
+import DataModel from "../data-model";
 
 const NODE_WIDTH = 100
 const NODE_HEIGHT = 40
@@ -36,6 +37,12 @@ Node.prototype.getAttrObject = function(){
 }
 
 Node.prototype.setAttr = function (name,value) {
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setAttr操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: `a:${name}`,
@@ -53,6 +60,12 @@ Node.prototype.a = function () {
         if(typeof arguments[0] === 'string'){
             return this.getAttr(arguments[0])
         }else if(typeof arguments[0] === 'object'){
+            if(!this.getEditable()){
+                if(process.env.NODE_ENV === 'development'){
+                    console.warn("getEditable = false，不能进行a(object)操作")
+                }
+                return
+            }
             let historyEvents = []
             for(let key in arguments[0]){
                 historyEvents.push({
@@ -89,6 +102,12 @@ Node.prototype.getId = function(){
 }
 
 Node.prototype.setId = function(id){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setId操作")
+        }
+        return
+    }
     this._id = id
     this.redraw()
     return this
@@ -100,6 +119,12 @@ Node.prototype.getDisplayName = function(){
 }
 
 Node.prototype.setDisplayName = function(displayName){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setDisplayName操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: 'p:displayName',
@@ -118,6 +143,12 @@ Node.prototype.getWidth = function(){
 }
 
 Node.prototype.setWidth = function(width){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setWidth操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: 'p:width',
@@ -137,6 +168,12 @@ Node.prototype.getHeight = function(){
 }
 
 Node.prototype.setHeight = function(height){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setHeight操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: 'p:height',
@@ -155,6 +192,12 @@ Node.prototype.getPosition = function(){
 }
 
 Node.prototype.setPosition = function(x,y){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setPosition操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: 'p:position',
@@ -177,6 +220,12 @@ Node.prototype.getRect = function(){
 }
 
 Node.prototype.setRect = function(x, y, width, height){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setRect操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: 'p:rect',
@@ -194,6 +243,12 @@ Node.prototype.setRect = function(x, y, width, height){
 }
 
 Node.prototype.translate = function(tx = 0, ty = 0){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行translate操作")
+        }
+        return
+    }
     let historyEvent = {
         kind: 'property',
         property: 'p:translate',
@@ -215,11 +270,23 @@ Node.prototype.getWires = function(){
 }
 
 Node.prototype.setWires = function(wires){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行setWires操作")
+        }
+        return
+    }
     this._wires = wires
     return this
 }
 
 Node.prototype.removeWires = function(port, targetId){
+    if(!this.getEditable()){
+        if(process.env.NODE_ENV === 'development'){
+            console.warn("getEditable = false，不能进行removeWires操作")
+        }
+        return
+    }
     let wires = this._wires[port] || []
     for(let i=0; i < wires.length; i++){
         if(wires[i] === targetId){
@@ -431,4 +498,29 @@ Node.prototype.destroy = function () {
     this._view = null
 }
 
+Node.prototype.moveToTop = function (){
+    let parentNode = this._view.parentNode
+    parentNode.removeChild(this._view)
+    parentNode.appendChild(this._view)
+
+}
+Node.prototype.moveToBottom = function (){
+    let parentNode = this._view.parentNode
+    parentNode.removeChild(this._view)
+    parentNode.prepend(this._view)
+
+}
+Node.prototype.insertBefore = function (referenceNode){
+    let parentNode = this._view.parentNode
+    parentNode.insertBefore(this._view, referenceNode._view)
+}
+
+Node.prototype.getEditable = function (){
+    if(this._dataModel){
+        return this._dataModel.getEditable()
+    }else {
+        return true
+    }
+
+}
 export default Node

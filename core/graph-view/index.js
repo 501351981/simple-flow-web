@@ -32,6 +32,7 @@ function GraphView(dataModel, options = {}) {
     this._offsetY = 0   // 鼠标在图纸上的位置 Y
 
     this._version = '1.0.0'
+    this._editable = this._config.graphView.editable
     this.initView()
     this.initEvent()
     this.initSelectionModel()
@@ -50,4 +51,13 @@ hookMixin(GraphView)
 GraphView.prototype.getVersion = function () {
     return this._version
 }
+
+GraphView.prototype.setEditable = function (editable){
+    this._editable = editable
+}
+
+GraphView.prototype.getEditable = function (){
+    return this._editable
+}
+
 export default GraphView

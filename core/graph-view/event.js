@@ -80,6 +80,12 @@ function wire(graphView) {
     graphView._nodeLayer.delegate('.sf-flow-node-port-output','mousedown',function (e) {
         console.log('port mousedown',e)
         e.stopPropagation()
+        if(!graphView.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行拖拽连线操作")
+            }
+            return
+        }
         let target = e.currentTarget
         let source = $(target).parent()[0].__node__
         let sourcePort = target.getAttribute('data-index') * 1
@@ -136,6 +142,12 @@ function wire(graphView) {
     // 连线，从输入管脚到输出管脚
     graphView._nodeLayer.delegate('.sf-flow-node-port-input','mousedown',function (e) {
         e.stopPropagation()
+        if(!graphView.getEditable()){
+            if(process.env.NODE_ENV === 'development'){
+                console.warn("getEditable = false，不能进行拖拽连线操作")
+            }
+            return
+        }
         let currentTarget = e.currentTarget
         let target = $(currentTarget).parent()[0].__node__
         let [endX, endY] = target.getInputPortCenter()
