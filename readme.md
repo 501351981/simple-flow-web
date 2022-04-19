@@ -1,16 +1,26 @@
 # SF.js
 
 ## 简介
-实现了一个流程渲染引擎，可以很方便的用于渲染类似工作流、业务流等，类似于IBM的node-red规则引擎中的流程。
-
-利用SF.js可以非常方便在画布上添加/移动/删除一个节点，支持节点之间的连线，绘制好的图纸可以生成
-一个json保存到数据库，下次进入可以根据这个json渲染出对应的流程图。
-
-SF.js基于svg进行图形的渲染，放大缩小不失真。
+实现了一个轻量级的web端流程渲染引擎，可以用来渲染类似工作流、业务流等流程图，流程图最终可以通过序列化保存成一个json结构存储起来，
+后续再通过该引擎反序列化json数据到画布上。
 
 ![效果预览](./doc/images/preview.png)
 
-SF.js主要包括由以下几个类构成
+**核心能力包括：**
+- 支持自定义注册不同类型的节点（输入节点、处理节点、输出节点等），配置节点样式
+- 支持在画布上添加节点、移动节点、修改节点配置属性、删除节点等
+- 支持节点之间进行拖拽连线
+- 支持图纸的序列化和反序列化，数据格式为json，可存储到数据库
+- 支持历史管理，可以进行undo、redo操作
+- 支持缩放画布
+- 支持框选
+- 支持复制/粘贴/删除等快捷键操作
+- 支持单选、多选节点
+- 基于SVG进行节点渲染，放大缩小不失真
+
+
+**SF.js主要包括由以下几个类构成：**
+
 - GraphView：画布模型，负责画布相关的处理，包括初始化画布、事件绑定、快捷键绑定
 - DataModel：数据模型，负责图纸序列化/反序列化，添加、删除节点、添加连线，遍历节点，根据id获取节点信息等， 通过对dataModel操作，实现画布的渲染，一般不直接操作GraphView
 - SelectionModel：选择模型，负责管理节点选中相关操作，单选、全选、取消选择、获取当前选中节点等
@@ -18,15 +28,41 @@ SF.js主要包括由以下几个类构成
 - Node：节点模型，设置节点宽高/位置、业务属性、画布上的渲染（draw和redraw）
 - Wire：连线模型，负责节点之间的连线在画布上渲染（draw和redraw）
 
-## 用法示例
+## 安装使用
 
-### 引入SF.js及其样式
+### 通过html直接引入
 
-```javascript
-import SF from 'simple-flow/core/index'
-import 'simple-flow/core/style/index.less'
+可下载lib目录下的文件sf.js和sf.css，在html中直接引入
+```html
+<html>
+    <head>
+      <!--   引入sf.js和sf.css   -->
+      <link rel="stylesheet" href="./lib/sf.css"> 
+      <script src="./lib/sf.js"></script>
+    </head>
+
+    <body>
+    ...
+    </body>
+
+</html>
 ```
 
+### 通过npm安装
+
+通过npm install安装simple-flow-web
+```shell
+npm install simple-flow-web
+```
+
+在项目中通过import引入
+```javascript
+import SF from 'simple-flow-web'
+import 'simple-flow-web/lib/sf.css'
+```
+
+
+## 用法示例
 ### 实例化
 由于HistoryManager和GraphView都需要用到数据模型DataModel，所以先实例化DataMode
 ```javascript
@@ -38,7 +74,8 @@ let graphView = new SF.GraphView(dataModel, {
         height:6000,
         scale:{
             max:3
-        }
+        },
+        editable:true, //设为true则可以进行各种编辑操作（添加/删除/修改节点等）; 设为false一般用于运行态，只允许查看
     }
 })
 ```
@@ -146,11 +183,25 @@ dataModel.add(node2)
 dataModel.add(wire)
 ```
 
+### 序列化图纸为json
+绘制完图纸后，希望将图纸序列化为JSON，后续可以进行存储，如调用接口存储到数据库
+```javascript
+let json = dataModel.serialize()
+//可调用接口将json存储到数据库
+```
+
 ### 反序列化图纸到画布上
 
 我们一般真实使用时，是先有图纸的信息，JSON格式，然后通过反序列化，渲染到图纸上
 ```javascript
+//图纸json正常是通过接口请求回来的
 let json = {"v":"1.0.0","p":{"width":5000,"height":5000,"gridSize":20,"background":"#fff"},"a":{"init":true},"d":[{"type":"inject","id":"1aa6129ca0eb2042","p":{"displayName":"注入数据","position":{"x":295,"y":106},"width":200,"height":40},"a":{"payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1},"wires":[["49536505a4488892"]]},{"type":"function","id":"49536505a4488892","p":{"displayName":"函数处理","position":{"x":565,"y":117},"width":200,"height":40},"a":{"payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1},"wires":[["a2a0ae774c68190b"]]},{"type":"function","id":"a2a0ae774c68190b","p":{"displayName":"函数处理2","position":{"x":589,"y":217},"width":200,"height":40},"a":{"payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1},"wires":[["cbe4c17ebc4b7c03"]]},{"type":"debug","id":"cbe4c17ebc4b7c03","p":{"displayName":"调试","position":{"x":911,"y":229},"width":150,"height":40},"a":{"payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1},"wires":[]}]}
 dataModel.deserialize(json)
-graphView.addToDOM(ref.current)
 ```
+
+### 将画布挂载到页面上
+在画布挂载到dom之前，页面上是不显示的，可通过addToDom将画布挂载到页面上
+```javascript
+graphView.addToDom(document.getElementById('simple-flow-wrapper'))
+```
+

@@ -76,7 +76,7 @@ export function viewMixin(GraphView) {
         return this
     }
 
-    GraphView.prototype.addToDOM = function(parentNode){
+    GraphView.prototype.addToDom = function(parentNode){
         this._parentNode = $(parentNode)
         this._parentNode.append(this._outerLayer)
         return this
