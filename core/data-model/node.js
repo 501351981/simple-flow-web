@@ -26,7 +26,6 @@ export  function nodeMixin(DataModel) {
                 let node
                 if(typeof NodeConstruct === 'function'){
                     node = new NodeConstruct(nodeConfig, this)
-                    console.log('node',node)
 
                 }else{
                     node = new Node(nodeConfig, this)

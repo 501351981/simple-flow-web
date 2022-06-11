@@ -78,7 +78,6 @@ function wire(graphView) {
     let dataModel = graphView._dataModel
     // 连线，从输出管脚到输入管脚
     graphView._nodeLayer.delegate('.sf-flow-node-port-output','mousedown',function (e) {
-        console.log('port mousedown',e)
         e.stopPropagation()
         if(!graphView.getEditable()){
             if(process.env.NODE_ENV === 'development'){
@@ -110,7 +109,6 @@ function wire(graphView) {
 
         }
         function inputMouseUpHandle(event) {
-            console.log('mouseup')
             let currentTarget = event.currentTarget
             let target = $(currentTarget).parent()[0].__node__
 
@@ -333,7 +331,6 @@ function groupSelect(graphView) {
                 width: Math.abs(width),
                 height: Math.abs(height)
             },groupSelect.intersects, groupSelect.selectable))
-            console.log(x,y,Math.abs(width),Math.abs(height))
             graphView._selectLayer.empty()
             graphView._eventLayer.unbind('mousemove', eventLayerMouseMoveHandle)
             graphView._eventLayer.unbind('mouseup', eventLayerMouseUpHandle)

@@ -3,7 +3,6 @@ import {addShortcut} from "../utils/shortcut/index";
 export function shortcutMixin(GraphView) {
     GraphView.prototype.initShortcut = function () {
         let eventLayer = this.getEventLayer()[0]
-        console.log('eventLayer',eventLayer)
         const shortcutConfig = [
             {
                 name: 'copy',
@@ -132,7 +131,6 @@ export function shortcutMixin(GraphView) {
             return
         }
         let datas = this.sm().getSelection()
-        console.log(datas)
         if(datas && datas.length){
             this.beforeDelete(datas,(d)=>{
                 this.getDataModel().remove(d)

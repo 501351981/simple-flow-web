@@ -38,7 +38,6 @@ function GraphView(dataModel, options = {}) {
     this.initSelectionModel()
     this.initShortcut()
     dataModel.setGraphView(this)
-    console.log('config',this._config)
 }
 
 nodeMixin(GraphView)

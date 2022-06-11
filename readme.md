@@ -4,6 +4,9 @@
 实现了一个轻量级的web端流程渲染引擎，可以用来渲染类似工作流、业务流等流程图，流程图最终可以通过序列化保存成一个json结构存储起来，
 后续再通过该引擎反序列化json数据到画布上。
 
+[演示地址](https://501351981.github.io/simple-flow-web/example/)
+(可拖拽节点、可连线、delete删除、ctrl+z撤销，ctrl++放大等)
+
 ![效果预览](./doc/images/preview.png)
 
 **核心能力包括：**

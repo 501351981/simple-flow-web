@@ -1,6 +1,6 @@
 {
   "name": "simple-flow-web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于SVG渲染 和 数据驱动 的流程渲染引擎",
   "main": "lib/sf.js",
   "directories": {
@@ -29,6 +29,7 @@
     "webpack-cli": "^4.9.2"
   },
   "files": [
-    "lib"
+    "lib",
+    "doc"
   ]
 }

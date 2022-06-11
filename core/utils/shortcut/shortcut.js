@@ -34,8 +34,6 @@ const shortcut = {
 
 		// The function to be called at keypress
 		const func = function (e) {
-			// debugger
-			// console.log(e)
 			e = e || window.event;
 
 			let code;
@@ -76,10 +74,7 @@ const shortcut = {
 			if (e.metaKey) modifiers.meta.pressed = true;
 			// Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
 			let kp = 0;
-			// console.log('opt',opt)
 			for (let i = 0; (k = keys[i]), i < keys.length; i++) {
-				// Modifiers
-				// console.log('k=',k)
 				if (k === 'ctrl' || k === 'control') {
 					kp++;
 					modifiers.ctrl.wanted = true;
@@ -93,8 +88,6 @@ const shortcut = {
 					kp++;
 					modifiers.meta.wanted = true;
 				} else if (k.length > 1) {
-					// If it is a special key
-					// console.log('special_keys[k] === code',k,special_keys[k] ,code,)
 					if (special_keys[k] === code) kp++;
 				} else if (opt.keycode) {
 					debugger
@@ -109,7 +102,6 @@ const shortcut = {
 					}
 				}
 			}
-			// console.log(modifiers, kp, keys.length, 'modifiers');
 			if (
 				kp === keys.length &&
 				modifiers.ctrl.pressed === modifiers.ctrl.wanted &&
